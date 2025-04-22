@@ -1,0 +1,38 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DJANGO_SETTINGS_MODULE: "Dpro.settings"
+      POSTGRES_DB: "dprodb"
+      POSTGRES_USER: "riku"
+      POSTGRES_PASSWORD: "dpro.pass"
+      POSTGRES_HOST: "db"
+      POSTGRES_PORT: "5432"
+    volumes:
+      - ./sites:/app
+      - ./sites/staticfiles:/app/staticfiles
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: riku
+      POSTGRES_PASSWORD: dpro.pass
+      POSTGRES_DB: dprodb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+volumes:
+  postgres_data:
