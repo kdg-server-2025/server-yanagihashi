@@ -1,30 +1,17 @@
-# ベースイメージを指定
-FROM python:3.12-slim
+# ベースイメージに Ubuntu 24.04 を指定
+FROM ubuntu:24.04
 
-# 必要なツールをインストール
-RUN apt-get update && apt-get install -y \
-    gcc \
-    g++ \
-    build-essential \
-    libffi-dev \
-    libssl-dev \
-    && rm -rf /var/lib/apt/lists/*
+# 環境変数を非対話に設定（tzdataなどのインストール時に必要）
+ENV DEBIAN_FRONTEND=noninteractive
 
-# 作業ディレクトリを設定
-WORKDIR /app
+# パッケージの更新と nginx のインストール
+RUN apt-get update && \
+    apt-get install -y nginx && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# 必要なファイルをコピー
-COPY requirements.txt /requirements.txt
+# ポート80を公開
+EXPOSE 80
 
-# 依存パッケージをインストール
-RUN pip install --upgrade pip && pip install -r /requirements.txt
-
-# アプリケーションコードをコピー
-COPY ./sites /app
-
-# 環境変数の設定
-ENV DJANGO_SETTINGS_MODULE=Dpro.settings
-ENV PYTHONUNBUFFERED=1
-
-# エントリーポイントを設定
-CMD ["bash", "-c", "python manage.py migrate && python manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"]
+# デフォルトの起動コマンド（フォアグラウンド実行）
+CMD ["nginx", "-g", "daemon off;"]
