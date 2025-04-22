@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dpro Book Search{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/search_books/base.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header>
+        <h1>蔵書の楽園</h1>
+        <nav>
+            <ul>
+                <li><a href="/">ホーム</a></li>
+                <li><a href="{% url 'search_books:search_books' %}">本を探す</a></li>
+                <li>
+                    <form method="post" action="{% url 'accounts:logout' %}" id="logout-form" style="display: none;">
+                        {% csrf_token %}
+                    </form>
+                    <a href="#" id="logout-link">ログアウト</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2024 蔵書の楽園. All rights reserved.</p>
+    </footer>
+    <script src="{% static 'js/search_books/filter.js' %}"></script>
+</body>
+</html>

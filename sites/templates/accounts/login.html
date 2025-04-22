@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン</title>
+    <link rel="stylesheet" href="{% static 'css/accounts/login.css' %}">
+</head>
+<body>
+<div class="login-page">
+    <div class="login-box">
+        <h1 class="login-title">ログイン</h1>
+        <form method="post" action="{% url 'accounts:login' %}?next={{ request.GET.next|default:'' }}">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="form-group">
+                {{ form.username.errors }}
+                <input type="text" name="username" placeholder="ユーザー名 または メールアドレス" class="login-input" required>
+            </div>
+            <div class="form-group">
+                {{ form.password.errors }}
+                <input type="password" name="password" placeholder="パスワード" class="login-input" required>
+            </div>
+            <input type="hidden" name="next" value="{{ request.GET.next|default:'' }}">
+            <button type="submit" class="btn-login">ログイン</button>
+        </form>
+        <p class="signup-link">
+            アカウントをお持ちでないですか？
+            <a href="{% url 'accounts:signup' %}">サインアップ</a>
+        </p>
+    </div>
+</div>
+</body>
+</html>
