@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   db:
-    image: mariadb:latest
+    image: mariadb:11.2
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: somewordpress
@@ -14,7 +14,7 @@ services:
     tty: true
 
   wordpress:
-    image: wordpress:latest
+    image: wordpress:6.5-apache
     restart: always
     depends_on:
       - db
