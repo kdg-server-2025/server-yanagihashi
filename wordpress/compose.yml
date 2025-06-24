@@ -1,6 +1,6 @@
 services:
   db:
-    image: mariadb:11.2
+    image: mariadb:11.4
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: somewordpress
@@ -11,7 +11,7 @@ services:
       - db_data:/var/lib/mysql
 
   wordpress:
-    image: wordpress:6.5-apache
+    image: wordpress:6.8-apache
     restart: always
     depends_on:
       - db
