@@ -9,7 +9,6 @@ services:
       MYSQL_PASSWORD: wordpress
     volumes:
       - db_data:/var/lib/mysql
-    tty: true
 
   wordpress:
     image: wordpress:6.5-apache
